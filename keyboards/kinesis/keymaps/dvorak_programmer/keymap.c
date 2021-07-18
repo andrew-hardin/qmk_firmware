@@ -1,3 +1,20 @@
+// Notes because you never can remember this stuff:
+//
+// [BUILDING]
+//   util/docker_build.sh kinesis/stapelberg:dvorak_programmer
+//   util/docker_build.sh kinesis/kint36:dvorak_programmer
+//
+// [FLASH FIRMWARE]
+// To enter programming mode, hold LSHIFT + RSHIFT, then tap "B".
+// In the QMK documentation, this is called command mode.
+//
+// [NUMLOCK]
+// Go to the numpad layer. With the right hand, hit the thumb's
+// top-left-most key. You gotta memorize this one...
+//
+//
+
+
 #include "kinesis.h"
 
 #define _DVORAK 0 // Base Dvorak layer
@@ -9,9 +26,8 @@ enum CustomKeycodes {
   GNOME_SEARCH
 };
 
-// Quick build note:
-//   util/docker_build.sh kinesis/stapelberg:dvorak_programmer
-//   util/docker_build.sh kinesis/kint36:dvorak_programmer
+
+
 
 /****************************************************************************************************
 *
