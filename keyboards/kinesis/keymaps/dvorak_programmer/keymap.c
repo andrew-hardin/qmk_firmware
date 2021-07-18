@@ -19,10 +19,15 @@
 
 #define _DVORAK 0 // Base Dvorak layer
 #define _NUMBERS 1  // Numpad layer
+#define _MACROS 2  // Numpad layer
 
 enum CustomKeycodes {
   LOCK_OR_UNLOCK = SAFE_RANGE,
-  GNOME_SEARCH
+  GNOME_SEARCH, // xdg-open with any query
+  STD,          // std::
+  DOUBLECOLON,  // ::
+  LEFTCHEVRONS,  // <<
+  CPP_REF_SEARCH // xdg-open with cpp reference search
 };
 
 
@@ -32,9 +37,9 @@ enum CustomKeycodes {
 *
 *
 * ,--------------------------------------------------------------------------------------------------------------------.
-* | SEARCH |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F8  ||  F9  |  F10 |  F12 | CAPS | lock | Vol- | Vol+ | numpad |
+* |        |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F8  ||  F9  |  F10 |  F12 | CAPS | lock | Vol- | Vol+ | numpad |
 * |--------+------+------+------+------+------+----------------------------+------+------+------+------+------+--------|
-* |   $    |  #   |  !   |  {   |  }   |  &   |                            |   |  |  [   |   ]  |  +   |  *   |        |
+* |   $    |  #   |  !   |  {   |  }   |  &   |                            |   |  |  [   |   ]  |  +   |  *   |   @    |
 * |--------+------+------+------+------+------|                            +------+------+------+------+------+--------|
 * | ESC    |  '"  |  ,<  |  .>  |   P  |   Y  |                            |   F  |   G  |   C  |   R  |   L  |  =+    |
 * |--------+------+------+------+------+------|                            |------+------+------+------+------+--------|
@@ -42,7 +47,7 @@ enum CustomKeycodes {
 * |--------+------+------+------+------+------|                            |------+------+------+------+------+--------|
 * | LShift(|  ;:  |   Q  |   J  |   K  |   X  |                            |   B  |   M  |   W  |  V   |   Z  | RShift)|
 * `--------+------+------+------+------+-------                            `------+------+------+------+------+--------'
-*          |  `~  |\numpd| Left | Right|                                          | Up   | Down |  /?  |  @   |
+*          |  `~  |\numpd| Left | Right|                                          | Up   | Down |  /?  |@MACRO|
 *          `---------------------------'                                          `---------------------------'
 *                                        ,-------------.          ,-------------.
 *                                        | Ctrl | Alt  |          | Gui  | Ctrl |
@@ -51,12 +56,26 @@ enum CustomKeycodes {
 *                                 | BkSp | Del  |------|          |------|Return| Space|
 *                                 |      |      | End  |          | PgDn |      |      |
 *                                 `--------------------'          `--------------------'
+*
+* ,--------------------------------------------
+* |        |      |      |      |      |      |
+* |--------+------+------+------+------+------+
+* |        |      |      |      |      |      |
+* |--------+------+------+------+------+------|
+* |        |search|cppref|      |      |      |
+* |--------+------+------+------+------+------|
+* |        |  ::  |std:: |  <<  |      |      |    << this is the home row...
+* |--------+------+------+------+------+------|
+* |        |      |      |      |      |      |
+* `--------+------+------+------+------+-------
+*          |      |      |      |      |       
+*          `---------------------------'       
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_DVORAK] = LAYOUT(
         // left hand
-        GNOME_SEARCH,   KC_F1,   KC_F2,   KC_F3,   KC_F4,  KC_F5, KC_F6, KC_F7, KC_F8,
+        KC_NO,   KC_F1,   KC_F2,   KC_F3,   KC_F4,  KC_F5, KC_F6, KC_F7, KC_F8,
         KC_DOLLAR,   KC_HASH,    KC_EXCLAIM,    KC_LEFT_CURLY_BRACE, KC_RIGHT_CURLY_BRACE, KC_AMPERSAND,
         KC_ESCAPE,   KC_QUOT, KC_COMM, KC_DOT,  KC_P,   KC_Y,
         KC_TAB,  KC_A,    KC_O,    KC_E,    KC_U,   KC_I,
@@ -68,11 +87,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                    KC_BSPC, KC_DEL,  KC_END,
         // right hand
         KC_F9,  KC_F10,   KC_F11,   KC_F12,   KC_CAPSLOCK, LOCK_OR_UNLOCK, KC_VOLD, KC__VOLUP, TG(_NUMBERS),
-        KC_PIPE,   KC_LBRACKET,     KC_RBRACKET,     KC_PLUS,     KC_PAST,    KC_NO,
+        KC_PIPE,   KC_LBRACKET,     KC_RBRACKET,     KC_PLUS,     KC_PAST,    KC_AT,
         KC_F,   KC_G,     KC_C,     KC_R,     KC_L,    KC_EQUAL,
         KC_D,   KC_H,     KC_T,     KC_N,     KC_S,    KC_MINUS,
         KC_B,   KC_M,     KC_W,     KC_V,     KC_Z,    KC_RSPC,
-                          KC_UP,  KC_DOWN, KC_SLASH, KC_AT,
+                          KC_UP,  KC_DOWN, KC_SLASH, OSL(_MACROS),
         // right thumb
         KC_LGUI, KC_RCTL,
         KC_PGUP,
@@ -102,6 +121,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_NUMLOCK, KC_O,
        KC_NO,
        KC_TRANSPARENT, KC_ENT, KC_P0
+),
+
+[_MACROS] = LAYOUT(
+       // left hand
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+       KC_NO,   GNOME_SEARCH,  CPP_REF_SEARCH,   KC_NO,   KC_NO,   KC_NO,
+       KC_NO,   DOUBLECOLON, STD,   LEFTCHEVRONS,   KC_NO,   KC_NO,
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        // left thumb
+                                           KC_NO,   KC_NO,
+                                                    KC_NO,
+                                  KC_NO,   KC_NO,   KC_NO,
+
+       // right hand
+       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+       KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,   KC_NO,
+       KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,   KC_NO,
+       KC_NO,   KC_NO,    KC_NO,    KC_NO,    KC_NO,   KC_NO,
+                KC_NO,   KC_NO,   KC_NO,   KC_NO,
+       // right thumb
+       KC_NO, KC_NO,
+       KC_NO,
+       KC_NO, KC_NO, KC_NO
 )
 };
 
@@ -138,10 +183,18 @@ void matrix_scan_user(void) {
 // A timer used to determine LOCK_OR_UNLOCK macro.
 uint16_t unlock_hold_timer = 0;
 
-// Manually implement a MOD_TAP w/ macro for emitting "std::" and "::" on LCTL/RCTL.
-uint16_t lctl_hold_timer = 0;
-uint16_t rctl_hold_timer = 0;
-bool other_key_hit = false;
+void ExecuteCommand(const char* command, bool move_left_one) {
+  // Open up the command line launch in Gnome.
+  // Setup a DDG query with an "I'm feeling lucky" option.
+  SEND_STRING(SS_DOWN(X_LALT) SS_DOWN(X_F2) SS_UP(X_F2) SS_UP(X_LALT));
+  wait_ms(50);
+  SEND_STRING(command);
+  // Move cursor so that it's within the double quotes.
+  if(move_left_one) {
+    SEND_STRING(SS_TAP(X_LEFT));
+  }
+  // ... type query and hit enter!
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch(keycode) {
@@ -162,43 +215,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case GNOME_SEARCH:
       if(record->event.pressed) {
-        // Open up the command line launch in Gnome.
-        // Setup a DDG query with an "I'm feeling lucky" option.
-        SEND_STRING(SS_DOWN(X_LALT) SS_DOWN(X_F2) SS_UP(X_F2) SS_UP(X_LALT));
-        SEND_STRING("xdg-open \"https://duckduckgo.com/?q=!+\"");
-        // Move cursor so that it's within the double quotes.
-        SEND_STRING(SS_TAP(X_LEFT));
-        // ... type query and hit enter!
+        // Launch a browser, then search using DDG's feeling lucky feature.
+        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+\"", true);
       }
       break;
-    case KC_LCTL:
+    case STD:
       if(record->event.pressed) {
-        lctl_hold_timer = timer_read();
-        register_code(KC_LCTL);
-        other_key_hit = false;
-      } else {
-        unregister_code(KC_LCTL);
-        if (timer_elapsed(lctl_hold_timer) < 350 && !other_key_hit) {
-          SEND_STRING("std::");
-          print("Saying std\n");
-          //led_set_kb(255);
-        }
+        SEND_STRING("std::");
       }
       break;
-    case KC_RCTRL:
+    case DOUBLECOLON:
       if(record->event.pressed) {
-        rctl_hold_timer = timer_read();
-        register_code(KC_RCTRL);
-        other_key_hit = false;
-      } else {
-        unregister_code(KC_RCTRL);
-        if (timer_elapsed(rctl_hold_timer) < 350 && !other_key_hit) {
-          SEND_STRING("::");
-        }
+        SEND_STRING("::");
+      }
+      break;
+    case LEFTCHEVRONS:
+      if(record->event.pressed) {
+        SEND_STRING("<< ");
+      }
+      break;
+    case CPP_REF_SEARCH:
+      if(record->event.pressed) {
+        // Launch a browser, then search cppreference using DDG's feeling lucky feature.
+        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+site:cppreference.com \"", true);
       }
       break;
     default:
-      other_key_hit = true;
       break;
   }
   return true;
