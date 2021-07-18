@@ -34,7 +34,7 @@ enum CustomKeycodes {
 * ,--------------------------------------------------------------------------------------------------------------------.
 * | SEARCH |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F8  ||  F9  |  F10 |  F12 | CAPS | lock | Vol- | Vol+ | numpad |
 * |--------+------+------+------+------+------+----------------------------+------+------+------+------+------+--------|
-* |   $    |  #   |  !   |  {   |  }   |  &   |                            |   |  |  [   |   ]  |  +   |  *   | fnkeys |
+* |   $    |  #   |  !   |  {   |  }   |  &   |                            |   |  |  [   |   ]  |  +   |  *   |        |
 * |--------+------+------+------+------+------|                            +------+------+------+------+------+--------|
 * | ESC    |  '"  |  ,<  |  .>  |   P  |   Y  |                            |   F  |   G  |   C  |   R  |   L  |  =+    |
 * |--------+------+------+------+------+------|                            |------+------+------+------+------+--------|
@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                    KC_BSPC, KC_DEL,  KC_END,
         // right hand
         KC_F9,  KC_F10,   KC_F11,   KC_F12,   KC_CAPSLOCK, LOCK_OR_UNLOCK, KC_VOLD, KC__VOLUP, TG(_NUMBERS),
-        KC_PIPE,   KC_LBRACKET,     KC_RBRACKET,     KC_PLUS,     KC_PAST,    TG(_NUMBERS_FN),
+        KC_PIPE,   KC_LBRACKET,     KC_RBRACKET,     KC_PLUS,     KC_PAST,    KC_NO,
         KC_F,   KC_G,     KC_C,     KC_R,     KC_L,    KC_EQUAL,
         KC_D,   KC_H,     KC_T,     KC_N,     KC_S,    KC_MINUS,
         KC_B,   KC_M,     KC_W,     KC_V,     KC_Z,    KC_RSPC,
