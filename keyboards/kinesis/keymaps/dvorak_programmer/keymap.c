@@ -23,11 +23,12 @@
 
 enum CustomKeycodes {
   LOCK_OR_UNLOCK = SAFE_RANGE,
-  GNOME_SEARCH, // xdg-open with any query
   STD,          // std::
   DOUBLECOLON,  // ::
   LEFTCHEVRONS,  // <<
-  CPP_REF_SEARCH // xdg-open with cpp reference search
+  GENERIC_SEARCH, // xdg-open with any query
+  CPP_REF_SEARCH, // xdg-open with cpp reference search
+  STACKEXCHANGE_SEARCH   // xdg-open with stackexchange/stackoverflow search
 };
 
 
@@ -62,7 +63,7 @@ enum CustomKeycodes {
 * |--------+------+------+------+------+------+
 * |        |      |      |      |      |      |
 * |--------+------+------+------+------+------|
-* |        |search|cppref|      |      |      |
+* |        |search|cppref|stack |      |      |
 * |--------+------+------+------+------+------|
 * |        |  ::  |std:: |  <<  |      |      |    << this is the home row...
 * |--------+------+------+------+------+------|
@@ -127,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        // left hand
        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   GNOME_SEARCH,  CPP_REF_SEARCH,   KC_NO,   KC_NO,   KC_NO,
+       KC_NO,   GENERIC_SEARCH,  CPP_REF_SEARCH,   STACKEXCHANGE_SEARCH,   KC_NO,   KC_NO,
        KC_NO,   DOUBLECOLON, STD,   LEFTCHEVRONS,   KC_NO,   KC_NO,
        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
                 KC_NO,   KC_NO,   KC_NO,   KC_NO,
@@ -213,12 +214,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
-    case GNOME_SEARCH:
-      if(record->event.pressed) {
-        // Launch a browser, then search using DDG's feeling lucky feature.
-        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+\"", true);
-      }
-      break;
     case STD:
       if(record->event.pressed) {
         SEND_STRING("std::");
@@ -234,12 +229,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING("<< ");
       }
       break;
+    case GENERIC_SEARCH:
+      if(record->event.pressed) {
+        // Launch a browser, then search using DDG's feeling lucky feature.
+        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+\"", true);
+      }
+      break;
     case CPP_REF_SEARCH:
       if(record->event.pressed) {
         // Launch a browser, then search cppreference using DDG's feeling lucky feature.
         ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+site:cppreference.com \"", true);
       }
       break;
+    case STACKEXCHANGE_SEARCH:
+      if(record->event.pressed) {
+        // ... stackexchange or stackoverflow
+        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+(site:stackexchange.com OR site:stackoverflow.com) \"", true);
+      }
     default:
       break;
   }
