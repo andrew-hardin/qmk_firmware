@@ -19,9 +19,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define CONFIG_H
 
 /* USB Device descriptor parameter */
-#define VENDOR_ID       0xFEED
-#define MANUFACTURER    You
-#define PRODUCT         Kinesis Advantage/Contoured
+#undef VENDOR_ID
+#define VENDOR_ID 0x29ea
+#undef PRODUCT_ID
+#define PRODUCT_ID 0x0102
+#undef DEVICE_VER
+#define DEVICE_VER 0x0001  // 0 or 1?
+#undef MANUFACTURER
+#define MANUFACTURER "Kinesis"
+#undef PRODUCT
+#define PRODUCT "Advantage2 Keyboard"
 
 // Mouse
 #define MOUSEKEY_DELAY          60
