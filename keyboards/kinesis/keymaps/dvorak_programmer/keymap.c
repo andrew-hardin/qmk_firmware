@@ -19,7 +19,6 @@
 
 #define _DVORAK 0 // Base Dvorak layer
 #define _NUMBERS 1  // Numpad layer
-#define _NUMBERS_FN 2 // Numpad, but for function keys
 
 enum CustomKeycodes {
   LOCK_OR_UNLOCK = SAFE_RANGE,
@@ -103,31 +102,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_NUMLOCK, KC_O,
        KC_NO,
        KC_TRANSPARENT, KC_ENT, KC_P0
-),
-
-[_NUMBERS_FN] = LAYOUT(
-       // left hand
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-                KC_NO,   KC_NO,   KC_NO,   KC_NO,
-        // left thumb
-                                           KC_NO,   KC_NO,
-                                                    KC_NO,
-                                  KC_NO,   KC_NO,   KC_NO,
-       // right hand
-       KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-       KC_NO,   KC_F10,   KC_F11,   KC_F12,   KC_NO,   KC_TRANSPARENT,
-       KC_NO,   KC_F7,    KC_F8,    KC_F9,    KC_NO,   KC_NO,
-       KC_NO,   KC_F4,    KC_F5,    KC_F6,    KC_NO,   KC_NO,
-       KC_NO,   KC_F1,    KC_F2,    KC_F3,    KC_NO,   KC_NO,
-                KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       // right thumb
-       KC_NO, KC_NO,
-       KC_NO,
-       KC_NO, KC_NO, KC_NO
 )
 };
 
