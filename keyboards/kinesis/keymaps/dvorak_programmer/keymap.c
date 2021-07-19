@@ -70,8 +70,8 @@ enum CustomKeycodes {
 * |--------+------+------+------+------+------|
 * |        |      |      |      |      |      |
 * `--------+------+------+------+------+-------
-*          |      |      |      |      |       
-*          `---------------------------'       
+*          |      |      |      |      |
+*          `---------------------------'
 */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -182,21 +182,20 @@ void matrix_scan_user(void) {
 
 }
 
+
+
+
 // A timer used to determine LOCK_OR_UNLOCK macro.
 uint16_t unlock_hold_timer = 0;
 
-void ExecuteCommand(const char* command, bool move_left_one) {
-  // Open up the command line launch in Gnome.
-  // Setup a DDG query with an "I'm feeling lucky" option.
-  SEND_STRING(SS_DOWN(X_LALT) SS_DOWN(X_F2) SS_UP(X_F2) SS_UP(X_LALT));
+#define GNOME_EXECUTE_COMMAND \
+  SEND_STRING(SS_DOWN(X_LALT) SS_DOWN(X_F2) SS_UP(X_F2) SS_UP(X_LALT)); \
   wait_ms(50);
-  SEND_STRING(command);
-  // Move cursor so that it's within the double quotes.
-  if(move_left_one) {
-    SEND_STRING(SS_TAP(X_LEFT));
-  }
-  // ... type query and hit enter!
-}
+
+#define GNOME_EXECUTE_COMMAND_LEFT_ONE(command) \
+  GNOME_EXECUTE_COMMAND \
+  SEND_STRING(command); \
+  SEND_STRING(SS_TAP(X_LEFT));
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch(keycode) {
@@ -233,19 +232,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case GENERIC_SEARCH:
       if(record->event.pressed) {
         // Launch a browser, then search using DDG's feeling lucky feature.
-        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+\"", true);
+        GNOME_EXECUTE_COMMAND_LEFT_ONE("xdg-open \"https://duckduckgo.com/?q=!+\"");
       }
       break;
     case CPP_REF_SEARCH:
       if(record->event.pressed) {
         // Launch a browser, then search cppreference using DDG's feeling lucky feature.
-        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+site:cppreference.com \"", true);
+        GNOME_EXECUTE_COMMAND_LEFT_ONE("xdg-open \"https://duckduckgo.com/?q=!+site:cppreference.com \"");
       }
       break;
     case STACKEXCHANGE_SEARCH:
       if(record->event.pressed) {
         // ... stackexchange or stackoverflow
-        ExecuteCommand("xdg-open \"https://duckduckgo.com/?q=!+(site:stackexchange.com OR site:stackoverflow.com) \"", true);
+        GNOME_EXECUTE_COMMAND_LEFT_ONE("xdg-open \"https://duckduckgo.com/?q=!+(site:stackexchange.com OR site:stackoverflow.com) \"");
       }
     default:
       break;
